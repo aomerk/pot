@@ -1,0 +1,347 @@
+<form script="single_trend.js" stylesheet="single.css">
+  <label>Manuka Honeypot Clone</label>
+  <description>Cyber "intelligence"</description>
+  <form>
+    <label>Manuka Honeypot</label>
+    <description>Cyber "intelligence"</description>
+    <fieldset submitButton="false">
+      <input type="time" token="field1" searchWhenChanged="true">
+        <label></label>
+        <default>
+          <earliest>-12h@h</earliest>
+          <latest>now</latest>
+        </default>
+      </input>
+    </fieldset>
+  </form>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Overview</title>
+      <single>
+        <title>Successful Logins</title>
+        <search>
+          <query>index="cowrie" eventid="cowrie.login.success" | stats count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="field">count</option>
+        <option name="linkView">search</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+      <single>
+        <title>Failed Logins</title>
+        <search>
+          <query>index="cowrie" eventid="nginx.login.failed" | stats count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="field">count</option>
+        <option name="linkView">search</option>
+        <option name="numberPrecision">0</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+      <single>
+        <title>Distinct IP Addresses</title>
+        <search>
+          <query>index="nginx" | dedup src_ip |stats count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="field">count</option>
+        <option name="linkView">search</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+      <single>
+        <title>Files Downloaded</title>
+        <search>
+          <query>index="cowrie" data="*GET*" | timechart span=24h count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="field">count</option>
+        <option name="linkView">search</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Honeypot connections over time</title>
+      <chart>
+        <search>
+          <query>index="cowrie" eventid="cowrie.session.connect"| timechart span=10m count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.drilldown">all</option>
+        <option name="height">142</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Pew Pew</title>
+      <map>
+        <search>
+          <query>index="cowrie" | iplocation src_ip | geostats count by Country</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="mapping.type">marker</option>
+        <option name="refresh.display">progressbar</option>
+      </map>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top IPs connection timeline</title>
+      <table>
+        <title>Top attacker IPs</title>
+        <search>
+          <query>index="cowrie" | rex field=src_ip mode=sed s/::ffff:// | chart sparkline as Sparkline, count by src_ip | rename src_ip as Source | sort 10 -count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Attacking Countries Last 24h</title>
+      <chart>
+        <search>
+          <query>index="cowrie" | iplocation src_ip | top Country|fields Country, count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">none</option>
+        <option name="height">349</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top probed ports</title>
+      <table>
+        <search>
+          <query>index="cowrie"| top limit=20 dst_port | fields dst_port, count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top User Password Combinations</title>
+      <table>
+        <search>
+          <query>index="cowrie" login_combo=*  | top login_combo | rename login_combo AS "Usr/Pwd Combination" count AS "Count" | fields - percent</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Usernames</title>
+      <table>
+        <search>
+          <query>index="cowrie" | top username |fields username, count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Passwords</title>
+      <table>
+        <search>
+          <query>index="cowrie" | top password |fields password, count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Usr/Pwd combinations usage over time</title>
+        <search>
+          <query>index="cowrie" login_combo=* | timechart count by login_combo WHERE max in top10</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Latest VirusTotal File Submissions</title>
+      <table>
+        <search>
+          <query>index=cowrie eventid=cowrie.virustotal.scanfile |fields sha256, positives, total|fields - _raw, _time</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="color" field="positives">
+          <colorPalette type="list">[#53A051,#F8BE34,#DC4E41]</colorPalette>
+          <scale type="threshold">0,10</scale>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <title>Latest VirusTotal URL Submissions</title>
+      <table>
+        <search>
+          <query>index=cowrie eventid=cowrie.virustotal.scanurl |fields url, positives, total |fields - _raw, _time</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Top entered commands</title>
+        <search>
+          <query>index=cowrie | top input | fields - percent</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Most rare commands</title>
+        <search>
+          <query>index=cowrie | rare input | fields - percent</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Top URI downloaded through CLI</title>
+        <search>
+          <query>index="cowrie" uri=* |top uri</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Top Destination IPs</title>
+        <search>
+          <query>index=cowrie |top dst_ip</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Latest recorded TTY sessions     to replay          /home/cowrie/cowrie/bin/./playlog /home/cowrie/cowrie/ [pasteherettyfrombelow|]</title>
+        <search>
+          <query>index="cowrie" ttylog=* |fields - _raw |fields ttylog</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
