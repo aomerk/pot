@@ -82,4 +82,14 @@ sudo service splunk start
 
 echo "Register a HTTP Event source from splunk dashboard and get token. Then, in etc/cowrie.cfg enable splunk output and insert token"
 
+sudo apt install nginx
+
+echo "Install Nginx add on for splunk from Browse More apps "
+
+# support splunk like log format
+sudo sed -i -e 's/access_log .*;/        # creating a new format called adv\n        log_format adv \x27site="\$server_name" server="\$host” dest_port="\$server_port" \x27\n                       \x27dest_ip="\$server_addr" src="\$remote_addr" src_ip="\$realip_remote_addr" \x27\n                       \x27user="\$remote_user" time_local="\$time_local" protocol="\$server_protocol" \x27\n                       \x27status="\$status" bytes_out="\$bytes_sent" \x27\n                       \x27bytes_in="\$upstream_bytes_received" http_referer="\$http_referer" \x27\n                       \x27http_user_agent="\$http_user_agent" nginx_version="\$nginx_version" \x27\n                       \x27http_x_forwarded_for="\$http_x_forwarded_for" \x27\n                       \x27http_x_header="\$http_x_header" uri_query="\$query_string" uri_path="\$uri" \x27\n                       \x27http_method="\$request_method" response_time="\$upstream_response_time" \x27\n                       \x27cookie="\$http_cookie" request_time="\$request_time" \x27;\n        access_log \/var\/log\/nginx\/access\.log adv;/' /etc/nginx/nginx.conf
+
+# Create data source 
+# Choose nginx access log path
+# choose nginx_kv for source type
 
