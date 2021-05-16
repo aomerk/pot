@@ -1,3 +1,4 @@
+
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -11,7 +12,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -102,26 +102,32 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* Ubuntu
   ```sh
-  npm install npm@latest -g
+  sh ./scripts/prerequisites_ubuntu.sh
   ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+#### Ubuntu
+
+1. Create a free trial account for splunk enterprise. May take a couple minutes for your account to be approved
+2. Go to Downloads page and choose download via command line. For the time of writing this document, following install procedure is valid.
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   wget -O splunk-8.2.0-e053ef3c985f-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=8.2.0&product=splunk&filename=splunk-8.2.0-e053ef3c985f-linux-2.6-amd64.deb&wget=true'
+   sudo dpkg -i splunk-8.2.0-e053ef3c985f-linux-2.6-amd64.deb
+   
    ```
-3. Install NPM packages
+3. Next step is to enable splunk at start and accept the license agreement.
    ```sh
-   npm install
+   sudo /opt/splunk/bin/splunk enable boot-start
    ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
+   
+4. Choose an administator username and a strong password. After completion, start splunk:
+  ```sh
+  sudo service splunk start
+  ```
+
 
 
 
@@ -143,6 +149,7 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 <!-- CONTRIBUTING -->
 ## Contributing
+
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
