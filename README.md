@@ -18,14 +18,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="web/static/images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/aomerk/pot">
+    <img src="web/static/images/logo.jpg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">HTTP honeypot with splunk integration</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    Basic configuration for an http honeypot
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
@@ -109,7 +109,7 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-#### Ubuntu
+#### Splunk
 
 1. Create a free trial account for splunk enterprise. May take a couple minutes for your account to be approved
 2. Go to Downloads page and choose download via command line. For the time of writing this document, following install procedure is valid.
@@ -124,10 +124,22 @@ This is an example of how to list things you need to use the software and how to
    ```
    
 4. Choose an administator username and a strong password. After completion, start splunk:
-  ```sh
-  sudo service splunk start
-  ```
+    ```sh
+    sudo service splunk start
+    ```
 
+#### Nginx
+1. Install nginx from your package manager.
+    ```sh
+    sudo apt-get install nginx
+    ```
+
+2. Go to nginx configuration you want to edit. If you are going to use the whole web server as honeypot, edit `http` block in `/etc/nginx/nginx.conf`, else, go to the server block you want to edit. Default access logs in nginx does not provide enough information to mine data. 
+
+    -   Add a new access log format named adv:
+        ```sh
+        
+        ```
 
 
 
