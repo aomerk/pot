@@ -12,11 +12,21 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
-      - 
-        name: Configure GPG Key
-        run: echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
-        env:     
-          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+      -
+        name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      -
+          name: GPG user IDs
+          run: |
+            echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
+            echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
+            echo "name:        ${{ steps.import_gpg.outputs.name }}"
+            echo "email:       ${{ steps.import_gpg.outputs.email }}"
+
       -
         name: Checkout
         uses: actions/checkout@v2
